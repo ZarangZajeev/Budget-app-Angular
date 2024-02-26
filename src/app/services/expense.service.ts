@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http'
+import { Subject, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -7,6 +8,8 @@ import {HttpClient} from '@angular/common/http'
 export class ExpenseService {
 
   baseUrl:string="http://127.0.0.1:8000/api/v1/transactions/"
+
+  refreshRequired=new Subject();
 
   constructor(private http:HttpClient) { }
 
@@ -22,7 +25,7 @@ export class ExpenseService {
 
   // service for create new transaction
   createTransaction(data:any){
-    return this.http.post(this.baseUrl,data)
+    return this.http.post(this.baseUrl,data).pipe(tap(data=>this.refreshRequired.next(true)))
   }
 
   // service for update new transaction
