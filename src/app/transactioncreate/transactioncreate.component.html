@@ -1,7 +1,8 @@
 <div class="container">
     <form action="" (ngSubmit)="addTransaction()" class="form-control p-5" [formGroup]="transactionForm">
         <div class="text-center mb-2">
-            <span class="h3">Add Expense and Income</span>
+            <span class="h3 fw-bold"[hidden]="isEdit">Add Expense or Income</span>
+            <span class="h3 fw-bold" [hidden]="!isEdit">Update Expense or Income</span>
         </div>
         <div class="mb-3">
             <label for="">enter transaction title</label>
@@ -29,7 +30,8 @@
             <input type="text" placeholder="enter user" class="form-control" formControlName="user">
         </div>
         <div class="mb-3">
-            <button class="btn btn-success" type="submit">Add</button>
+            <button class="btn btn-success" type="submit" [hidden]="isEdit">Add</button>
+            <button class="btn btn-warning" [hidden]="!isEdit">Edit</button>
         </div>
     </form>
 </div>

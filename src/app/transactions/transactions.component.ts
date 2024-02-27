@@ -16,4 +16,12 @@ export class TransactionsComponent implements OnInit{
     this.service.getTransanction().subscribe(data=>this.transactions=data)
     this.service.refreshRequired.subscribe(data=>this.ngOnInit())
   }
+
+  destroyTransaction(id:number){
+    this.service.removeTransaction(id).subscribe(data=>this.ngOnInit())
+  }
+
+  editTransaction(id:number){
+    this.service.dispatchTransactionId(id)
+  }
 }

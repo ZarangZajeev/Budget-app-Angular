@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms'
 import { ExpenseService } from '../services/expense.service';
 
@@ -7,11 +7,11 @@ import { ExpenseService } from '../services/expense.service';
   templateUrl: './transactioncreate.component.html',
   styleUrls: ['./transactioncreate.component.css']
 })
-export class TransactioncreateComponent {
+export class TransactioncreateComponent implements OnInit{
+  isEdit:boolean=false;
   categories=['food','fuel','entertainment','bills','rent',"emi",'miscellaneous']
 
   constructor(private service:ExpenseService){
-
   }
 
   transactionForm=new FormGroup(
@@ -25,8 +25,22 @@ export class TransactioncreateComponent {
   )
 
   addTransaction(){
-    let data=this.transactionForm.value;
-    this.service.createTransaction(data).subscribe(data=>console.log(data))
+    if(this.isEdit){
+      // update service
+    }
+    else{
+      // create service
+      let data=this.transactionForm.value;
+      this.service.createTransaction(data).subscribe(data=>console.log(data))
+      this.transactionForm.reset()  
+    }
   }
+  
 
+  ngOnInit(){
+    this.service.emitTransactionId.subscribe((id:any)=>{
+    this.isEdit=true
+    this.service.retrieveTransanction(id).subscribe(data=>this.transactionForm.patchValue(data))
+    })
+  }
 }

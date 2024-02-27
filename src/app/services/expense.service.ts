@@ -10,6 +10,7 @@ export class ExpenseService {
   baseUrl:string="http://127.0.0.1:8000/api/v1/transactions/"
 
   refreshRequired=new Subject();
+  emitTransactionId=new Subject();
 
   constructor(private http:HttpClient) { }
 
@@ -36,5 +37,10 @@ export class ExpenseService {
   // remove transaction
   removeTransaction(id:number){
     return this.http.delete(`${this.baseUrl}${id}`)
+  }
+
+  // for passing transaction id to its subscriber
+  dispatchTransactionId(id:number){
+    this.emitTransactionId.next(id)
   }
 }
